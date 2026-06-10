@@ -1,10 +1,12 @@
 x-airflow-common:
   &airflow-common
   image: apache/airflow:2.9.2
+  env_file: .env
   environment:
-    AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@airflow_db:5432/airflow
+    AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://${POSTGRES_USER}:${POSTGRES_PASSWORD}@airflow_db:5432/${POSTGRES_DB}
     AIRFLOW__CORE__EXECUTOR: SequentialExecutor
-    AIRFLOW__WEBSERVER__SECRET_KEY: "chave_super_secreta_123"
+    AIRFLOW__WEBSERVER__SECRET_KEY: "${AIRFLOW__WEBSERVER__SECRET_KEY}"
+    _PIP_ADDITIONAL_REQUIREMENTS: "requests pandas psycopg2-binary"
   volumes:
     - ./dags:/opt/airflow/dags
   extra_hosts:
@@ -15,10 +17,11 @@ x-airflow-common:
 services:
   airflow_db:
     image: postgres:15
+    env_file: .env
     environment:
-      POSTGRES_USER: airflow
-      POSTGRES_PASSWORD: airflow
-      POSTGRES_DB: airflow
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U airflow"]
       interval: 5s
@@ -42,7 +45,7 @@ services:
       --lastname Rosa \
       --role Admin \
       --email admin@admin.com \
-      --password admin || true
+      --password ${AIRFLOW_ADMIN_PASSWORD} || true
       "
 
   airflow-webserver:
