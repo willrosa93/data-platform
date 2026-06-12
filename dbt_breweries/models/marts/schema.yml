@@ -1,0 +1,21 @@
+# models/marts/schema.yml
+version: 2
+
+models:
+  - name: mart_brewery_by_type
+    description: "Contagem de cervejarias por tipo. Modelo fato para dashboards."
+    columns:
+      - name: brewery_type
+        data_tests:
+          - unique
+          - not_null
+      - name: total_breweries
+        data_tests:
+          - not_null
+
+  - name: mart_brewery_by_state
+    description: "Contagem de cervejarias por estado e tipo. Base para mapa no Metabase."
+    columns:
+      - name: total_breweries
+        data_tests:
+          - not_null
