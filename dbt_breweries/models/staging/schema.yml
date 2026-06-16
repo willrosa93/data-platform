@@ -1,0 +1,25 @@
+# models/staging/schema.yml
+version: 2
+
+models:
+  - name: stg_breweries
+    description: "Staging: dados da API de cervejarias, limpos e renomeados"
+    columns:
+      - name: id
+        description: "PK — ID único da cervejaria"
+        data_tests:
+          - unique
+          - not_null
+      - name: brewery_name
+        description: "Nome da cervejaria"
+        data_tests:
+          - not_null
+      - name: brewery_type
+        description: "Tipo de cervejaria"
+        data_tests:
+          - accepted_values:
+              values: ['micro', 'brewpub', 'large', 'regional', 'planning', 'bar', 'contract', 'proprietor', 'closed']
+      - name: country
+        description: "País"
+        data_tests:
+          - not_null

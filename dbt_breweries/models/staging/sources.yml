@@ -1,0 +1,26 @@
+# models/staging/sources.yml
+version: 2
+
+sources:
+  - name: banco_poo # nome lógico que você vai usar no {{ source() }}
+    database: banco_poo # nome real do banco no PostgreSQL
+    schema: public # schema onde a tabela está
+    description: "Dados brutos vindos da Open Brewery DB API via Airflow"
+    tables:
+      - name: breweries_raw
+        description: "Tabela raw populada pela DAG api_breweries no Airflow"
+        columns:
+          - name: id
+            description: "Identificador único da cervejaria (vem da API)"
+            data_tests:
+              - unique
+              - not_null
+          - name: brewery_type
+            description: "Tipo: micro, brewpub, large, regional, planning, bar, contract, proprietor, closed"
+            data_tests:
+              - accepted_values:
+                  values: ['micro', 'brewpub', 'large', 'regional', 'planning', 'bar', 'contract', 'proprietor', 'closed']
+          - name: name
+            description: "Nome da cervejaria"
+            data_tests:
+              - not_null
