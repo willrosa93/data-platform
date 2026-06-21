@@ -2,18 +2,24 @@ version: 2
 
 models:
   - name: stg_orders
-    description: Orders vindas da tabela raw ecommerce.orders
+    description: "Staging layer: tipos normalizados, status em lowercase"
     columns:
       - name: order_id
-        description: PK da order
+        description: Chave primária do pedido
         tests:
+          - not_null
           - unique
+
+      - name: customer_id
+        tests:
           - not_null
 
       - name: amount
         tests:
           - not_null
 
-      - name: created_at
+      - name: status
+        description: Status normalizado em lowercase
         tests:
-          - not_null
+          - accepted_values:
+              values: ['paid', 'pending', 'refund']

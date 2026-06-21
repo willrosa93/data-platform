@@ -1,0 +1,18 @@
+version: 2
+
+models:
+  - name: mart_orders_summary
+    description: "Resumo de pedidos por status — consumido pelo Looker Studio"
+    columns:
+      - name: status
+        tests:
+          - not_null
+          - unique
+
+      - name: qtd_pedidos
+        tests:
+          - not_null
+
+      - name: receita_total
+        tests:
+          - not_null
