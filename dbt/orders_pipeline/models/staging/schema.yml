@@ -1,6 +1,32 @@
 version: 2
 
+sources:
+  - name: breweries_raw
+    database: "{{ env_var('GOOGLE_CLOUD_PROJECT') }}"
+    schema: breweries_raw
+    tables:
+      - name: breweries
+
 models:
+  - name: stg_breweries
+    description: "Cervejarias limpas e padronizadas"
+    columns:
+      - name: id
+        description: "ID único da cervejaria"
+        data_tests:
+          - not_null
+          - unique
+      - name: brewery_type
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['micro', 'nano', 'regional', 'brewpub', 'large',
+                         'planning', 'bar', 'contract', 'proprietor', 'taproom', 'closed']
+      - name: brewery_name
+        data_tests:
+          - not_null
+
   - name: stg_orders
     description: "Staging layer: tipos normalizados, status em lowercase"
     columns:
@@ -22,4 +48,5 @@ models:
         description: Status normalizado em lowercase
         tests:
           - accepted_values:
-              values: ['paid', 'pending', 'refund']
+              arguments:
+                values: ['paid', 'pending', 'refund']

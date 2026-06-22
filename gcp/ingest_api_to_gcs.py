@@ -22,10 +22,10 @@ def fetch_api() -> list[dict]:
 
 
 def save_to_tmp(data: list[dict]) -> pathlib.Path:
-    """Salva JSON em /tmp com nome baseado na data."""
+    """Salva NDJSON em /tmp com nome baseado na data (um objeto por linha)."""
     hoje = datetime.date.today().isoformat()
     path = pathlib.Path(f"/tmp/breweries_{hoje}.json")
-    path.write_text(json.dumps(data, indent=2))
+    path.write_text("\n".join(json.dumps(r) for r in data))
     print(f"Salvo em {path} ({len(data)} registros)")
     return path
 

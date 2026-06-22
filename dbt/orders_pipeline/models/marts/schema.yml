@@ -1,6 +1,16 @@
 version: 2
 
 models:
+  - name: mart_breweries_by_type
+    description: "Agregação por tipo e país"
+    columns:
+      - name: brewery_type
+        data_tests:
+          - not_null
+      - name: total
+        data_tests:
+          - not_null
+
   - name: mart_orders_summary
     description: "Resumo de pedidos por status — consumido pelo Looker Studio"
     columns:
