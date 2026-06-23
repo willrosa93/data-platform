@@ -9,6 +9,8 @@ x-airflow-common:
     _PIP_ADDITIONAL_REQUIREMENTS: "requests pandas psycopg2-binary"
   volumes:
     - ./dags:/opt/airflow/dags
+    - ./gcp:/opt/airflow/gcp    # ← ADICIONAR ESTA LINHA
+    - ./home/voalle/person_projects/data-platform/dbt:/opt/airflow/dbt
   extra_hosts:
     - "host.docker.internal:host-gateway"
   networks:
